@@ -1,7 +1,6 @@
 package com.isd.ipa.EmployeeManager.repository;
 
 import com.isd.ipa.EmployeeManager.domain.Department;
-import com.isd.ipa.EmployeeManager.domain.Employee;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
