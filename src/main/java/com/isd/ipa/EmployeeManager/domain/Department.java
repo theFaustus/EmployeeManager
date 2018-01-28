@@ -1,14 +1,21 @@
 package com.isd.ipa.EmployeeManager.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 
 /**
  * Created by Faust on 1/3/2018.
  */
+@Document
 public class Department {
+    @Id
     private String departmentId;
     private String name;
     private String description;
+    @DBRef
     private List<Employee> employees;
 
     public Department() {

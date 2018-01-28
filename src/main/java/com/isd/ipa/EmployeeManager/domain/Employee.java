@@ -1,9 +1,14 @@
 package com.isd.ipa.EmployeeManager.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by Faust on 1/3/2018.
  */
+@Document
 public class Employee {
+    @Id
     private String employeeId;
     private String firstName;
     private String lastName;
