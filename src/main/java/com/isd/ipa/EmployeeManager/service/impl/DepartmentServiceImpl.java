@@ -5,12 +5,14 @@ import com.isd.ipa.EmployeeManager.repository.DepartmentRepository;
 import com.isd.ipa.EmployeeManager.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by Faust on 1/28/2018.
  */
+@Service
 public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
