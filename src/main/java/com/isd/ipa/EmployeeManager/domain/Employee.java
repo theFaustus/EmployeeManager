@@ -2,12 +2,13 @@ package com.isd.ipa.EmployeeManager.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.ResourceSupport;
 
 /**
  * Created by Faust on 1/3/2018.
  */
 @Document
-public class Employee {
+public class Employee extends ResourceSupport{
     @Id
     private String employeeId;
     private String firstName;

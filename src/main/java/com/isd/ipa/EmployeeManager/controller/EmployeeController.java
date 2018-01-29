@@ -13,6 +13,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 /**
  * Created by Faust on 1/29/2018.
  */
@@ -29,6 +32,8 @@ public class EmployeeController {
         if (employees.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
+            employees.forEach(e -> e.add(linkTo(methodOn(EmployeeController.class).getAllEmployees()).withRel("employees")));
+            employees.forEach(e -> e.add(linkTo(methodOn(EmployeeController.class).getEmployeeById(e.getEmployeeId())).withSelfRel()));
             return new ResponseEntity<>(employees, HttpStatus.OK);
         }
     }
@@ -39,6 +44,7 @@ public class EmployeeController {
         if (byEmployeeId == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+            byEmployeeId.add(linkTo(methodOn(EmployeeController.class).getEmployeeById(byEmployeeId.getEmployeeId())).withSelfRel());
             return new ResponseEntity<>(byEmployeeId, HttpStatus.OK);
         }
     }
@@ -68,7 +74,8 @@ public class EmployeeController {
             byEmployeeId.setFirstName(e.getFirstName());
             byEmployeeId.setLastName(e.getLastName());
             employeeService.updateEmployee(byEmployeeId);
-            return new ResponseEntity<>(employeeService, HttpStatus.OK);
+            byEmployeeId.add(linkTo(methodOn(EmployeeController.class).getEmployeeById(byEmployeeId.getEmployeeId())).withSelfRel());
+            return new ResponseEntity<>(byEmployeeId, HttpStatus.OK);
         }
     }
 

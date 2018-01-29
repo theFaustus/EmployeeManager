@@ -16,6 +16,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 /**
  * Created by Faust on 1/29/2018.
  */
@@ -35,6 +38,12 @@ public class DepartmentController {
         if (departments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
+            departments.forEach(d -> d.add(linkTo(methodOn(DepartmentController.class).getAllDepartments()).withRel("departments")));
+            departments.forEach(d -> d.add(linkTo(methodOn(DepartmentController.class).getDepartmentById(d.getDepartmentId())).withSelfRel()));
+            departments.forEach(d -> d.getEmployees().forEach(e -> {
+                e.add(linkTo(methodOn(EmployeeController.class).getAllEmployees()).withRel("employees"));
+                e.add(linkTo(methodOn(EmployeeController.class).getEmployeeById(e.getEmployeeId())).withSelfRel());
+            }));
             return new ResponseEntity<>(departments, HttpStatus.OK);
         }
     }
@@ -45,6 +54,12 @@ public class DepartmentController {
         if (byDepartmentId == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+            byDepartmentId.add(linkTo(methodOn(DepartmentController.class).getAllDepartments()).withRel("departments"));
+            byDepartmentId.add(linkTo(methodOn(DepartmentController.class).getDepartmentById(byDepartmentId.getDepartmentId())).withSelfRel());
+            byDepartmentId.getEmployees().forEach(e -> {
+                e.add(linkTo(methodOn(EmployeeController.class).getAllEmployees()).withRel("employees"));
+                e.add(linkTo(methodOn(EmployeeController.class).getEmployeeById(e.getEmployeeId())).withSelfRel());
+            });
             return new ResponseEntity<>(byDepartmentId, HttpStatus.OK);
         }
     }
@@ -67,7 +82,7 @@ public class DepartmentController {
     @RequestMapping(value = "/department/{id}", method = RequestMethod.PUT)
     public HttpEntity<?> updateDepartment(@PathVariable("id") String id, @RequestBody Department d) {
         Department byDepartmentId = departmentService.findByDepartmentId(id);
-        if(byDepartmentId == null){
+        if (byDepartmentId == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             byDepartmentId.setName(d.getName());
@@ -76,6 +91,12 @@ public class DepartmentController {
             byDepartmentId.getEmployees().forEach(employee -> employees.add(employeeService.findByEmployeeId(employee.getEmployeeId())));
             byDepartmentId.setEmployees(employees);
             departmentService.updateDepartment(byDepartmentId);
+            byDepartmentId.add(linkTo(methodOn(DepartmentController.class).getAllDepartments()).withRel("departments"));
+            byDepartmentId.add(linkTo(methodOn(DepartmentController.class).getDepartmentById(byDepartmentId.getDepartmentId())).withSelfRel());
+            byDepartmentId.getEmployees().forEach(e -> {
+                e.add(linkTo(methodOn(EmployeeController.class).getAllEmployees()).withRel("employees"));
+                e.add(linkTo(methodOn(EmployeeController.class).getEmployeeById(e.getEmployeeId())).withSelfRel());
+            });
             return new ResponseEntity<>(departmentService, HttpStatus.OK);
         }
     }

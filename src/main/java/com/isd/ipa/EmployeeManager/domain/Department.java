@@ -3,6 +3,7 @@ package com.isd.ipa.EmployeeManager.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Faust on 1/3/2018.
  */
 @Document
-public class Department {
+public class Department extends ResourceSupport{
     @Id
     private String departmentId;
     private String name;
